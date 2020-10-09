@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-      <button v-on:click="toggle='character-viewer'">View All characters</button>
+      <button v-on:click="toggle='character-viewer'; getCharacters();">View All characters</button>
       <button v-on:click="toggle='character-creator'">View Character Creator</button>
-    <CharacterViewer v-show="toggle==='character-viewer'"/>
-      <CharacterCreator v-show="toggle==='character-creator'"/>
+    <CharacterViewer v-show="toggle==='character-viewer'" :characters="characters"/>
+    <CharacterCreator v-show="toggle==='character-creator'"/>
       
       
   </div>
@@ -12,6 +12,7 @@
 <script>
 import CharacterViewer from './components/CharacterViewer.vue'
 import CharacterCreator from './components/CharacterCreator.vue'
+import axios from 'axios'
 export default {
   name: 'App',
   components: {
@@ -20,8 +21,19 @@ export default {
   },
   data: function (){
     return{
-      toggle: "character-viewer"
+      toggle: "character-viewer",
+      characters: null
     }
+  },
+  methods: {
+    getCharacters: function(){
+      axios
+        .get('http://localhost:3000/characters')
+        .then(response => (this.characters = response.data))
+    }
+  },
+  mounted: function(){
+    this.getCharacters();
   }
 }
 </script>

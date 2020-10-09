@@ -9,21 +9,27 @@
       <option value="thief">thief</option>
       <option value="warrior">warrior</option>
     </select>
-    <p>{{name}} & {{profession}}</p>
+    <button v-on:click="postCharacter"> Create Character </button>
   </div>
 </template>
 
 <script>
+import axios from "axios"
 export default {
   name: 'CharacterCreator',
   data: function(){
     return {
-      name:"",
-      profession: ""
+      name: null,
+      profession: null
     }
   },
-  props: {
-    msg: String
+  methods:{
+    postCharacter: function(){
+      axios.post('http://localhost:3000/characters', {
+        name: this.name,
+        profession: this.profession
+      })
+    }
   }
 }
 </script>
